@@ -2,7 +2,7 @@
 * Copyright (c) 2015 NAVER Corp.
 * egjs projects are licensed under the MIT license
 */
-import '../../../src/index.js';
+import '../../../src/pauseresume.js';
 
 // jscs:disable
 // to resolve transform style value

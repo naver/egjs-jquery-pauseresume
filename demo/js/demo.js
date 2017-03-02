@@ -2,4 +2,4 @@
  * Copyright (c) NAVER Corp.
  */
 
-console.log("Hello eg.PauseResume!!!", eg.PauseResume);
+console.log("Hello egjs pauseresume!!!", eg.PauseResume);

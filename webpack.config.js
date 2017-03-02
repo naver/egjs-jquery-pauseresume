@@ -2,9 +2,9 @@ var webpack = require("webpack");
 
 module.exports = {
 	entry: {
-		"eg.pauseResume": "./src/index.js",
-		"eg.pauseResume.min": "./src/index.js",
-		"eg.pauseResume.test": "./test/unit/js/test.js"
+		"pauseresume": "./src/pauseresume.js",
+		"pauseresume.min": "./src/pauseresume.js",
+		"pauseresume.test": "./test/unit/js/test.js"
 	},
 	output: {
 		path: __dirname + "/dist",
