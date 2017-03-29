@@ -3,15 +3,15 @@ module.exports = function(config) {
 		// test results reporter to use
 		// possible values: 'dots', 'progress'
 		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters:['dots', 'progress'],
+		reporters:['mocha'],
 		browsers: [],
-		frameworks: ['mocha', 'chai', 'sinon', 'qunit'],
+		frameworks: ['mocha', 'chai', 'sinon'],
 		files: [
 			// vendor files
 			'node_modules/jquery/dist/jquery.min.js',
 			'node_modules/lite-fixture/index.js',
 			// src files
-			{pattern: "test/unit/**/*.js"}
+			'./test/**/*.spec.js'
 		],
 		webpack: {
 			devtool: 'source-map',
