@@ -1,19 +1,17 @@
-import { AniProperty } from './AniProperty.js';
+import {AniProperty} from "./AniProperty";
+import {MathUtil} from "./MathUtil";
 
 export default (function($) {
-	"use strict";
-
-	var animateFn = $.fn.animate;
-	var stopFn = $.fn.stop;
-	var delayFn = $.fn.delay;
+	const animateFn = $.fn.animate;
+	const stopFn = $.fn.stop;
+	const delayFn = $.fn.delay;
 
 	function addAniProperty(type, el, prop, optall) {
-		var newProp;
+		const newProp = new AniProperty(type, el, prop, optall);
 
-		newProp = new AniProperty(type, el, prop, optall);
 		el.__aniProps = el.__aniProps || [];
 
-		//Animation is excuted immediately.
+		// Animation is excuted immediately.
 		if (el.__aniProps.length === 0) {
 			newProp.init();
 		}
@@ -21,23 +19,53 @@ export default (function($) {
 	}
 
 	function removeAniProperty(el) {
-		var removeProp = el.__aniProps.shift();
-		removeProp && removeProp.clearEasingFn();
+		const removeProp = el.__aniProps.shift();
 
+		removeProp && removeProp.clearEasingFn();
 		el.__aniProps[0] && el.__aniProps[0].init();
+	}
+
+	function prepareNextAniProp(el) {
+		// Dequeue animation property that was ended.
+		const removeProp = el.__aniProps.shift();
+		const userCallback = removeProp.opt.old;
+
+		removeProp.clearEasingFn();
+
+		// Callback should be called before aniProps.init()
+		if (userCallback && typeof userCallback === "function") {
+			userCallback.call(el);
+		}
+
+		// If next ani property exists
+		el.__aniProps[0] && el.__aniProps[0].init();
+		return el.__aniProps[0];
+	}
+
+	/**
+	 * Generate a new easing function.
+	 *
+	 * function to avoid JS Hint error "Don't make functions within a loop"
+	 */
+	function generateNewEasingFunc(resumePercent, remainPercent, scale, originalEasing) {
+		return function easingFunc(percent) {
+			const newPercent = resumePercent + remainPercent * percent;
+
+			return scale(originalEasing(newPercent));
+		};
 	}
 
 	$.fn.animate = function(prop, speed, easing, callback) {
 		return this.each(function() {
-			//optall should be made for each elements.
-			var optall = $.speed(speed, easing, callback);
+			// optall should be made for each elements.
+			const optall = $.speed(speed, easing, callback);
 
 			// prepare next animation when current animation completed.
 			optall.complete = function() {
 				prepareNextAniProp(this);
 			};
 
-			//Queue animation property to recover the current animation.
+			// Queue animation property to recover the current animation.
 			addAniProperty("animate", this, prop, optall);
 			animateFn.call($(this), prop, optall);
 		});
@@ -64,9 +92,9 @@ export default (function($) {
 	 * @param {Number} An integer indicating the number of milliseconds to delay execution of the next item in the queue.
 	 * @param {String} A string containing the name of the queue. Defaults to fx, the standard effects queue.
 	 */
-	$.fn.delay = function(time, type) {
-		var t;
-		var isCallByResume = arguments[2];//internal used value.
+	$.fn.delay = function(time, type, ...args) {
+		let t;
+		const isCallByResume = args[0]; // internal used value.
 
 		if (type && type !== "fx") {
 			return delayFn.call(this, time, type);
@@ -82,12 +110,12 @@ export default (function($) {
 				addAniProperty("delay", this, null, {duration: t});
 			}
 
-			var self = this;
-			delayFn.call($(this), time).queue(function(next) {
+
+			delayFn.call($(this), time).queue(next => {
 				next();
 
 				// Remove delay property when delay has been expired.
-				removeAniProperty(self);
+				removeAniProperty(this);
 			});
 		});
 	};
@@ -104,20 +132,21 @@ export default (function($) {
 	 */
 	$.fn.pause = function() {
 		return this.each(function() {
-			var p;
-			var type = "fx";
+			let p;
+			const type = "fx";
 
 			if (getStatus(this) !== "inprogress") {
 				return;
 			}
 
-			//Clear fx-queue except 1 dummy function
-			//for promise not to be expired when calling stop()
+			// Clear fx-queue except 1 dummy function
+			// for promise not to be expired when calling stop()
 			$.queue(this, type || "fx", [$.noop]);
 			stopFn.call($(this));
 
-			//Remember current animation property
-			if (p = this.__aniProps[0]) {
+			// Remember current animation property
+			p = this.__aniProps[0];
+			if (p) {
 				p.elapsed += $.now() - p.start;
 
 				// Complement native timer's inaccuracy (complete timer can be different from your request.)
@@ -131,25 +160,6 @@ export default (function($) {
 		});
 	};
 
-	function prepareNextAniProp(el) {
-		var removeProp;
-		var userCallback;
-
-		// Dequeue animation property that was ended.
-		removeProp = el.__aniProps.shift();
-		removeProp.clearEasingFn();
-		userCallback = removeProp.opt.old;
-
-		// Callback should be called before aniProps.init()
-		if (userCallback && typeof userCallback === "function") {
-			userCallback.call(el);
-		}
-
-		// If next ani property exists
-		el.__aniProps[0] && el.__aniProps[0].init();
-		return el.__aniProps[0];
-	}
-
 	/**
 	 * Resumes the animation paused through a call to the pause() method.
 	 * @ko pause() 메서드가 일시 정지한 애니메이션을 다시 실행한다
@@ -162,36 +172,38 @@ export default (function($) {
 	 */
 	$.fn.resume = function() {
 		return this.each(function() {
-			var type = "fx";
-			var p;
-			var i;
+			const type = "fx";
+			let p;
+			let i;
 
 			if (getStatus(this) !== "paused") {
 				return;
 			}
 
-			//Clear fx-queue,
-			//And this queue will be initialized by animate call.
+			// Clear fx-queue,
+			// And this queue will be initialized by animate call.
 			$.queue(this, type || "fx", []);
 
 			// Restore __aniProps
 			i = 0;
-			while (p = this.__aniProps[i]) {
+			p = this.__aniProps[i];
+
+			while (p) {
 				// Restore easing status
 				if (p.elapsed > 0 && p.opt.easing) {
-					var resumePercent = p.elapsed / p.opt.duration;
-					var remainPercent = 1 - resumePercent;
-					var originalEasing = $.easing[p.opt.easing];
-					var startEasingValue = originalEasing(resumePercent);
-					var scale = scaler([startEasingValue, 1], [0, 1]);
-					var newEasingName = p.opt.easing + "_" + p.uuid;
+					const resumePercent = p.elapsed / p.opt.duration;
+					const remainPercent = 1 - resumePercent;
+					const originalEasing = $.easing[p.opt.easing];
+					const startEasingValue = originalEasing(resumePercent);
+					const scale = MathUtil.scaler([startEasingValue, 1], [0, 1]);
+					const newEasingName = `${p.opt.easing}_${p.uuid}`;
 
 					// Make new easing function that continues from pause point.
 					$.easing[newEasingName] = generateNewEasingFunc(
 						resumePercent, remainPercent, scale, originalEasing);
 					p.opt.easing = newEasingName;
 
-					//Store new easing function to clear it later.
+					// Store new easing function to clear it later.
 					p.addEasingFn(newEasingName);
 				}
 
@@ -211,32 +223,23 @@ export default (function($) {
 				}
 
 				i++;
+				p = this.__aniProps[i];
 			}
 		});
 	};
 
-	/**
-	 * Generate a new easing function.
-	 *
-	 * function to avoid JS Hint error "Don't make functions within a loop"
-	 */
-	function generateNewEasingFunc(resumePercent, remainPercent, scale, originalEasing) {
-		return function easingFunc(percent) {
-			var newPercent = resumePercent + remainPercent * percent;
-			return scale(originalEasing(newPercent));
-		};
-	}
+	$.fn.stop = function(...args) {
+		const type = args[0];
+		let clearQ = args[1];
 
-	$.fn.stop = function(type, clearQueue) {
-		var clearQ = clearQueue;
-		stopFn.apply(this, arguments);
+		stopFn.apply(this, args);
 
 		if (typeof type !== "string") {
 			clearQ = type;
 		}
 
 		return this.each(function() {
-			var p;
+			let p;
 
 			// When this element was not animated properly, do nothing.
 			if (getStatus(this) === "empty") {
@@ -247,11 +250,13 @@ export default (function($) {
 				p = this.__aniProps.shift();
 				p && p.clearEasingFn();
 			} else {
-				//If clearQueue is requested,
-				//then all properties must be initialized
-				//for element not to be resumed.
-				while (p = this.__aniProps.shift()) {
+				// If clearQueue is requested,
+				// then all properties must be initialized
+				// for element not to be resumed.
+				p = this.__aniProps.shift();
+				while (p) {
 					p.clearEasingFn();
+					p = this.__aniProps.shift();
 				}
 				this.__aniProps = [];
 			}
@@ -261,28 +266,4 @@ export default (function($) {
 	$.expr.filters.paused = function(elem) {
 		return getStatus(elem) === "paused";
 	};
-
-	//Adopt linear scale from d3
-	function scaler(domain, range) {
-		var u = uninterpolateNumber(domain[0], domain[1]);
-		var i = interpolateNumber(range[0], range[1]);
-
-		return function(x) {
-			return i(u(x));
-		};
-	}
-
-	function interpolateNumber(a, b) {
-		a = +a, b = +b;
-		return function(t) {
-			return a * (1 - t) + b * t;
-		};
-	}
-
-	function uninterpolateNumber(a, b) {
-		b = (b -= a = +a) || 1 / b;
-		return function(x) {
-			return (x - a) / b;
-		};
-	}
 })(jQuery);
