@@ -86,15 +86,13 @@ export default (function($) {
 	$.fn.pause = function() {
 		return this.each(function() {
 			let p;
-			const type = "fx";
 
 			if (AniPropertyManager.getStatus(this) !== "inprogress") {
 				return;
 			}
-
 			// Clear fx-queue except 1 dummy function
 			// for promise not to be expired when calling stop()
-			$.queue(this, type || "fx", [$.noop]);
+			$.queue(this, "fx", [$.noop]);
 			stopFn.call($(this));
 
 			// Remember current animation property
