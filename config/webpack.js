@@ -1,27 +1,20 @@
 var pkg = require("../package.json");
 var path = require("path");
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var StringReplacePlugin = require("string-replace-webpack-plugin");
 
 module.exports = {
 	entry: {
-		"egjs-pauseresume": "./src/pauseresume.js"
+		"pauseresume": "./src/pauseresume.js",
+		"pauseresume.min": "./src/pauseresume.js",
 	},
 	output: {
 		path: path.resolve(__dirname, "../dist"),
 		filename: "[name].js",
-		library:  ["eg", "pauseresume" ],
+		library:  ["eg", "pauseresume"],
 		libraryTarget: "umd",
 	},
-	externals: [
-	// 	{
-	// 	"eg.component": {
-	// 		commonjs: "eg.component",
-	// 		commonjs2: "eg.component",
-	// 		amd: "eg.component",
-	// 		root: ["eg", "Component"]
-	// 	}
-	// }
-	],
+	externals: [],
 	devServer: {
 		publicPath: "/dist/"
 	},
@@ -58,8 +51,27 @@ module.exports = {
 							}
 						}
 					]})
-            }
+			}
 		]
 	},
-	plugins: [ new StringReplacePlugin() ]
+	plugins: [
+		new StringReplacePlugin(),
+		new UglifyJSPlugin({
+			include: /\.min\.js$/,
+			beautify: false,
+			mangle: {
+				screw_ie8: true,
+				keep_fnames: true
+			},
+			compress: {
+				screw_ie8: true,
+				warnings: false
+			},
+			output: {
+				screw_ie8: false
+			},
+			comments: false,
+			sourceMap: true
+		})
+	]
 };
