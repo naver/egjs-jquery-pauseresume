@@ -1,11 +1,11 @@
 module.exports = function(config) {
 	var karmaConfig = {
 		// test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+		// possible values: 'dots', 'progress'
+		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
 		reporters:['dots', 'progress'],
 		browsers: [],
-		frameworks: ['qunit'],
+		frameworks: ['mocha', 'chai', 'sinon', 'qunit'],
 		files: [
 			// vendor files
 			'node_modules/jquery/dist/jquery.min.js',
@@ -18,42 +18,42 @@ module.exports = function(config) {
 			module: {
 				rules: [
 					{
-            test: /(\.js)$/,
-            exclude: /(node_modules)/,
-            loader: 'babel-loader'
+						test: /(\.js)$/,
+						exclude: /(node_modules)/,
+						loader: 'babel-loader'
 					}
 				]
 			}
 		},
 		// // preprocess matching files before serving them to the browser
-    // // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-      'test/unit/**/*.js': config.coverage ? ['webpack'] : ['webpack', 'sourcemap']
-    }
+		// // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+		preprocessors: {
+			'test/unit/**/*.js': config.coverage ? ['webpack'] : ['webpack', 'sourcemap']
+		}
 	};
 
 	if(config.coverage) {
-    karmaConfig.reporters.push("coverage");
-    karmaConfig.coverageReporter = {
-        type: 'html',
-        dir: 'coverage'
-    };
-    karmaConfig.browsers.push("PhantomJS");
-    karmaConfig.webpack.module.rules.push(
-      {
-        test: /(\.js)$/,
-        exclude: /(test|node_modules)/,
-        enforce: "pre",
-        loader: 'isparta-loader'
-      }
-    );
-    // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
-    karmaConfig.singleRun = true;
-  } else {
-    karmaConfig.browsers.push("Chrome");
-    karmaConfig.singleRun = false;
-  }
+		karmaConfig.reporters.push("coverage");
+		karmaConfig.coverageReporter = {
+				type: 'html',
+				dir: 'coverage'
+		};
+		karmaConfig.browsers.push("PhantomJS");
+		karmaConfig.webpack.module.rules.push(
+			{
+				test: /(\.js)$/,
+				exclude: /(test|node_modules)/,
+				enforce: "pre",
+				loader: 'isparta-loader'
+			}
+		);
+		// Continuous Integration mode
+		// if true, Karma captures browsers, runs the tests and exits
+		karmaConfig.singleRun = true;
+	} else {
+		karmaConfig.browsers.push("Chrome");
+		karmaConfig.singleRun = false;
+	}
 
-  config.set(karmaConfig);
+	config.set(karmaConfig);
 };
