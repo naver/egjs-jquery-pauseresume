@@ -1,3 +1,12 @@
+/*!
+ * Copyright (c) 2017 undefined
+ * @egjs/pauseresume projects are licensed under the MIT license
+ * 
+ * @egjs/pauseresume JavaScript library
+ * 
+ * 
+ * @version 2.0.0-rc.1
+ */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
