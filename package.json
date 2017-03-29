@@ -7,6 +7,7 @@
     "dev-server": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "jsdoc": "node node_modules/jsdoc/jsdoc.js -c jsdoc.json",
     "test": "karma start",
+    "test:chrome": "karma start --chrome",
     "coverage": "karma start --coverage"
   },
   "author": "NAVER Corp.",
