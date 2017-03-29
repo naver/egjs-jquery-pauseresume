@@ -1,7 +1,8 @@
-import $ from 'jquery';
+import $ from "jquery";
+
 let uuid = 1;
 
-export class AniProperty {
+export default class AniProperty {
 	constructor(type, el, prop, optall) {
 		this.el = el;
 		this.opt = optall;
@@ -15,14 +16,11 @@ export class AniProperty {
 	}
 
 	init() {
-		var currValue;
 		this.start = $.now();
 		this.elapsed = 0;
 
-		for (var propName in this.prop) {
-			var propValue = this.prop[propName];
-			var markIndex;
-			var sign;
+		for (const propName in this.prop) {
+			const propValue = this.prop[propName];
 
 			// DO NOT SUPPORT TRANSFORM YET
 			// TODO: convert from relative value to absolute value on transform
@@ -30,54 +28,64 @@ export class AniProperty {
 				continue;
 			}
 
-			//If it has a absoulte value.
-			if (typeof propValue !== "string" ||
-				(markIndex = propValue.search(/[+|-]=/)) < 0) {
+			if (typeof propValue !== "string") {
+				continue;
+			}
+
+			// If it has a absoulte value.
+			const markIndex = propValue.search(/[+|-]=/);
+
+			if (markIndex < 0) {
 				// this.prop[propName] = propValue;
 				continue;
 			}
 
-			//If it has a relative value
-			sign = propValue.charAt(markIndex) === "-" ? -1 : 1;
+			// If it has a relative value
+			const sign = propValue.charAt(markIndex) === "-" ? -1 : 1;
 
 			// Current value
-			currValue = $.css(this.el, propName);
+			const currValue = $.css(this.el, propName);
 
 			// CurrValue + (relativeValue)
 			this.prop[propName] = propValue
-				.replace(/([-|+])*([\d|\.])+/g, this.generateAbsoluteValMaker(currValue, propName, sign))
+				.replace(/([-|+])*([\d|.])+/g, AniProperty.generateAbsoluteValMaker(currValue, propName, sign))
 				.replace(/[-|+]+=/g, "");
 		}
-	};
+	}
 
 	addEasingFn(easingName) {
 		this.easingNames.push(easingName);
-	};
+	}
 
 	clearEasingFn() {
-		var easing;
-		while (easing = this.easingNames.shift()) {
+		let easing;
+
+		easing = this.easingNames.shift();
+		while (easing) {
 			delete $.easing[easing];
+			easing = this.easingNames.shift();
 		}
 		this.easingNames = [];
-	};
+	}
 
 	/**
 	 * Generate a new absolute value maker.
 	 *
 	 * function to avoid JS Hint error "Don't make functions within a loop"
 	 */
-	generateAbsoluteValMaker(prevValue, propName, sign) {
+	static generateAbsoluteValMaker(prevValue, propName, sign) {
+		let prev = prevValue;
+
 		return function absoluteValMaker(match) {
-			if (!prevValue || prevValue === "auto") {
+			if (!prev || prev === "auto") {
 				// Empty strings, null, undefined and "auto" are converted to 0.
 				// This solution is somewhat extracted from jQuery Tween.propHooks._default.get
 				// TODO: Should we consider adopting a Tween.propHooks?
-				prevValue = 0;
+				prev = 0;
 			} else {
-				prevValue = parseFloat(prevValue);
+				prev = parseFloat(prev);
 			}
-			return prevValue + (match * sign);
+			return prev + (match * sign);
 		};
 	}
 }

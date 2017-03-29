@@ -1,46 +1,10 @@
-import {AniProperty} from "./AniProperty";
-import {MathUtil} from "./MathUtil";
+import AniPropertyManager from "./AniPropertyManager";
+import MathUtil from "./MathUtil";
 
 export default (function($) {
 	const animateFn = $.fn.animate;
 	const stopFn = $.fn.stop;
 	const delayFn = $.fn.delay;
-
-	function addAniProperty(type, el, prop, optall) {
-		const newProp = new AniProperty(type, el, prop, optall);
-
-		el.__aniProps = el.__aniProps || [];
-
-		// Animation is excuted immediately.
-		if (el.__aniProps.length === 0) {
-			newProp.init();
-		}
-		el.__aniProps.push(newProp);
-	}
-
-	function removeAniProperty(el) {
-		const removeProp = el.__aniProps.shift();
-
-		removeProp && removeProp.clearEasingFn();
-		el.__aniProps[0] && el.__aniProps[0].init();
-	}
-
-	function prepareNextAniProp(el) {
-		// Dequeue animation property that was ended.
-		const removeProp = el.__aniProps.shift();
-		const userCallback = removeProp.opt.old;
-
-		removeProp.clearEasingFn();
-
-		// Callback should be called before aniProps.init()
-		if (userCallback && typeof userCallback === "function") {
-			userCallback.call(el);
-		}
-
-		// If next ani property exists
-		el.__aniProps[0] && el.__aniProps[0].init();
-		return el.__aniProps[0];
-	}
 
 	/**
 	 * Generate a new easing function.
@@ -62,28 +26,17 @@ export default (function($) {
 
 			// prepare next animation when current animation completed.
 			optall.complete = function() {
-				prepareNextAniProp(this);
+				AniPropertyManager.prepareNextAniProp(this);
 			};
 
 			// Queue animation property to recover the current animation.
-			addAniProperty("animate", this, prop, optall);
+			AniPropertyManager.addAniProperty("animate", this, prop, optall);
 			animateFn.call($(this), prop, optall);
 		});
 
 		// TODO: Below code is more reasonable?
 		// return animateFn.call(this, prop, optall); // and declare optall at outside this.each loop.
 	};
-
-	// Check if this element can be paused/resume.
-	function getStatus(el) {
-		if (!el.__aniProps || el.__aniProps.length === 0) {
-			// Current element doesn't have animation information.
-			// Check 'animate' is applied to this element.
-			return "empty";
-		}
-
-		return el.__aniProps[0].paused ? "paused" : "inprogress";
-	}
 
 	/**
 	 * Set a timer to delay execution of subsequent items in the queue.
@@ -107,7 +60,7 @@ export default (function($) {
 			if (!isCallByResume) {
 				// Queue delay property to recover the current animation.
 				// Don't add property when delay is called by resume.
-				addAniProperty("delay", this, null, {duration: t});
+				AniPropertyManager.addAniProperty("delay", this, null, {duration: t});
 			}
 
 
@@ -115,7 +68,7 @@ export default (function($) {
 				next();
 
 				// Remove delay property when delay has been expired.
-				removeAniProperty(this);
+				AniPropertyManager.removeAniProperty(this);
 			});
 		});
 	};
@@ -135,7 +88,7 @@ export default (function($) {
 			let p;
 			const type = "fx";
 
-			if (getStatus(this) !== "inprogress") {
+			if (AniPropertyManager.getStatus(this) !== "inprogress") {
 				return;
 			}
 
@@ -152,7 +105,7 @@ export default (function($) {
 				// Complement native timer's inaccuracy (complete timer can be different from your request.)
 				// (eg. your request:400ms -> real :396 ~ 415 ms ))
 				if (p.elapsed >= p.opt.duration) {
-					p = prepareNextAniProp(this);
+					p = AniPropertyManager.prepareNextAniProp(this);
 				}
 
 				p && (p.paused = true);
@@ -176,7 +129,7 @@ export default (function($) {
 			let p;
 			let i;
 
-			if (getStatus(this) !== "paused") {
+			if (AniPropertyManager.getStatus(this) !== "paused") {
 				return;
 			}
 
@@ -242,7 +195,7 @@ export default (function($) {
 			let p;
 
 			// When this element was not animated properly, do nothing.
-			if (getStatus(this) === "empty") {
+			if (AniPropertyManager.getStatus(this) === "empty") {
 				return;
 			}
 
@@ -264,6 +217,6 @@ export default (function($) {
 	};
 
 	$.expr.filters.paused = function(elem) {
-		return getStatus(elem) === "paused";
+		return AniPropertyManager.getStatus(elem) === "paused";
 	};
 })(jQuery);
