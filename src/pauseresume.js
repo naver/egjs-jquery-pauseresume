@@ -1,6 +1,9 @@
 import AniPropertyManager from "./AniPropertyManager";
 import MathUtil from "./MathUtil";
 
+/**
+ * @namespace jQuery
+ */
 export default (function($) {
 	const animateFn = $.fn.animate;
 	const stopFn = $.fn.stop;
@@ -116,6 +119,7 @@ export default (function($) {
 	 * @ko pause() 메서드가 일시 정지한 애니메이션을 다시 실행한다
 	 *
 	 * @name jQuery#resume
+	 * @alias eg.Pause
 	 * @method
 	 * @support {"ie": "10+", "ch" : "latest", "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.3+ (except 3.x)"}
 	 * @example

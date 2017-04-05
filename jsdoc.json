@@ -4,13 +4,14 @@
 		"dictionaries": ["jsdoc","closure"]
 	},
 	"source": {
-		"include": ["src"],
+		"include": ["src", "README.md"],
 		"includePattern": ".+\\.js(doc|x)?$",
 		"excludePattern": "(^|\\/|\\\\)_"
 	},
 	"opts": {
 		"template": "node_modules/egjs-jsdoc-template",
-		"destination": "./doc/"
+		"destination": "./doc/",
+		"expendsItemMembers": true
 	},
 	"plugins": [
 		"plugins/markdown",
