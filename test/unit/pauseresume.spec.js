@@ -2,7 +2,7 @@
 * Copyright (c) 2015 NAVER Corp.
 * egjs projects are licensed under the MIT license
 */
-import "../../../src/pauseresume.js";
+import "../../src/pauseresume.js";
 
 function initializeElement() {
 	const sheet = document.createElement("style");
