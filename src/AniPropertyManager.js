@@ -1,10 +1,6 @@
 import AniProperty from "./AniProperty";
 
-export default class AniPropertyManager {
-	constructor() {
-		this.test = true;
-	}
-
+class AniPropertyManager {
 	static addAniProperty(type, el, prop, optall) {
 		const newProp = new AniProperty(type, el, prop, optall);
 
@@ -53,4 +49,4 @@ export default class AniPropertyManager {
 	}
 }
 
-// export default AniPropertyManager;
+export default AniPropertyManager;
