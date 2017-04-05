@@ -37,7 +37,7 @@
 			"url": ""
 		},
 		"meta": {
-			"title": "egjs::egjs-pauseresume - API",
+			"title": "egjs::eg.PauseResume - API",
 			"description": "Pauses and resumes animation executed by the jQuery animate() method",
 			"keyword": "jQuery, UI Component, egjs, pauseResume"
 		},
