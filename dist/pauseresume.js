@@ -362,6 +362,9 @@ var _MathUtil2 = _interopRequireDefault(_MathUtil);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * @namespace jQuery
+ */
 exports.default = function ($) {
 	var animateFn = $.fn.animate;
 	var stopFn = $.fn.stop;
@@ -478,6 +481,7 @@ exports.default = function ($) {
   * @ko pause() 메서드가 일시 정지한 애니메이션을 다시 실행한다
   *
   * @name jQuery#resume
+  * @alias eg.Pause
   * @method
   * @support {"ie": "10+", "ch" : "latest", "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.3+ (except 3.x)"}
   * @example
