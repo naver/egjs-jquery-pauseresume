@@ -44,7 +44,11 @@ eg.PauseResume has the dependencies for the following libraries:
 
 ### 4. Use eg.PauseResume
 ```javascript
-$("#area").animate({});//TODO: make sample
+function loopLeftRight() {
+  $("#area")
+    .animate({"left": "200px"})
+    .animate({"left": "0px"}, loopLeftRight);
+}
 
 $("#area").on("mouseover", function() {
   $(this).pause();
