@@ -1,7 +1,7 @@
 {
   "name": "@egjs/pauseresume",
   "version": "2.0.0-rc.1",
-  "main": "src/pauseresume.js",
+  "main": "dist/pauseresume.js",
   "scripts": {
     "start": "webpack-dev-server --env.mode server",
     "build": "webpack --env.mode production --config webpack.config.js",
@@ -22,7 +22,7 @@
     "babel-preset-es2015": "^6.22.0",
     "chai": "^3.5.0",
     "clean-webpack-plugin": "^0.1.15",
-    "egjs-jsdoc-template": "^1.3.0",
+    "egjs-jsdoc-template": "*",
     "eslint": "^3.18.0",
     "eslint-config-naver": "^1.0.0",
     "eslint-loader": "^1.7.0",
