@@ -1,5 +1,4 @@
-import $ from "jquery";
-
+const $ = jQuery;
 let uuid = 1;
 
 export default class AniProperty {
