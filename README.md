@@ -1,4 +1,4 @@
-# eg.PauseResume
+# egjs-pauseresume
 
 Pauses and resumes animation executed by the jQuery animate() method.
 
@@ -11,7 +11,7 @@ Pauses and resumes animation executed by the jQuery animate() method.
 
 ## Supported Browsers
 
-The following table shows browsers supported by eg.PauseResume
+The following table shows browsers supported by egjs-pauseresume
 
 |Internet Explorer|Chrome|Firefox|Safari|iOS|Android|
 |---|---|---|---|---|---|
@@ -19,7 +19,7 @@ The following table shows browsers supported by eg.PauseResume
 
 
 ## Dependency
-eg.PauseResume has the dependencies for the following libraries:
+egjs-pauseresume has the dependencies for the following libraries:
 
 |[jquery](https://jquery.com)|
 |----|
@@ -42,7 +42,7 @@ eg.PauseResume has the dependencies for the following libraries:
 <div id="area"></div>
 ```
 
-### 4. Use eg.PauseResume
+### 4. Use egjs-pauseresume
 ```javascript
 function loopLeftRight() {
   $("#area")
@@ -65,7 +65,7 @@ If you find a bug, please report it to us using the [Issues](https://github.com/
 
 
 ## License
-eg.PauseResume is released under the [MIT license](http://naver.github.io/egjs/license.txt).
+egjs-pauseresume is released under the [MIT license](http://naver.github.io/egjs/license.txt).
 
 ```
 Copyright (c) 2015 NAVER Corp.
