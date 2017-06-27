@@ -5,7 +5,7 @@
  * @egjs/pauseresume JavaScript library
  * 
  * 
- * @version 2.0.0
+ * @version 2.0.0-rc2
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -239,6 +239,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var $ = _jquery2.default;
 var uuid = 1;
 
 var AniProperty = function () {
@@ -257,7 +258,7 @@ var AniProperty = function () {
 	}
 
 	AniProperty.prototype.init = function init() {
-		this.start = _jquery2.default.now();
+		this.start = $.now();
 		this.elapsed = 0;
 
 		for (var propName in this.prop) {
@@ -285,7 +286,7 @@ var AniProperty = function () {
 			var sign = propValue.charAt(markIndex) === "-" ? -1 : 1;
 
 			// Current value
-			var currValue = _jquery2.default.css(this.el, propName);
+			var currValue = $.css(this.el, propName);
 
 			// CurrValue + (relativeValue)
 			this.prop[propName] = propValue.replace(/([-|+])*([\d|.])+/g, AniProperty.generateAbsoluteValMaker(currValue, propName, sign)).replace(/[-|+]+=/g, "");
@@ -301,7 +302,7 @@ var AniProperty = function () {
 
 		easing = this.easingNames.shift();
 		while (easing) {
-			delete _jquery2.default.easing[easing];
+			delete $.easing[easing];
 			easing = this.easingNames.shift();
 		}
 		this.easingNames = [];
