@@ -1,0 +1,13 @@
+component: PauseResume
+home: //naver.github.io/egjs
+desc: Pauses and resumes animation executed by the jQuery animate() method.
+dist:
+- release/latest/dist/pauseresume.js
+GA: UA-70842526-20
+github:
+  user: naver
+  repo: egjs-pauseresume 
+js:
+- assets/js/demo.js
+css:
+- assets/css/demo.css

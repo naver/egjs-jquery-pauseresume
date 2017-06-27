@@ -1,3 +1,5 @@
+import jQuery from "jquery";
+
 const $ = jQuery;
 let uuid = 1;
 

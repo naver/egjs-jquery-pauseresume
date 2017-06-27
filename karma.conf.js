@@ -1,59 +1,62 @@
 module.exports = function(config) {
-	var karmaConfig = {
-		// test results reporter to use
-		// possible values: 'dots', 'progress'
-		// available reporters: https://npmjs.org/browse/keyword/karma-reporter
-		reporters:['mocha'],
-		browsers: [],
-		frameworks: ['mocha', 'chai', 'sinon'],
-		files: [
-			// vendor files
+  var karmaConfig = {
+    frameworks: ['mocha', 'chai', 'sinon'],
+
+    // list of files / patterns to load in the browser
+    files: [
 			'node_modules/jquery/dist/jquery.min.js',
-			'node_modules/lite-fixture/index.js',
-			// src files
-			'./test/**/*.spec.js'
-		],
-		webpack: {
-			devtool: 'source-map',
-			module: {
-				rules: [
-					{
-						test: /(\.js)$/,
-						exclude: /(node_modules)/,
-						loader: 'babel-loader'
-					}
-				]
-			}
-		},
-		// // preprocess matching files before serving them to the browser
-		// // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-		preprocessors: {
-			'test/unit/**/*.js': config.coverage ? ['webpack'] : ['webpack', 'sourcemap']
-		}
-	};
+      './node_modules/lite-fixture/index.js',
+      './test/unit/**/*.spec.js'
+    ],
 
-	if(config.coverage) {
-		karmaConfig.reporters.push("coverage");
-		karmaConfig.coverageReporter = {
-				type: 'html',
-				dir: 'coverage'
-		};
-		karmaConfig.browsers.push("PhantomJS");
-		karmaConfig.webpack.module.rules.push(
-			{
-				test: /(\.js)$/,
-				exclude: /(test|node_modules)/,
-				enforce: "pre",
-				loader: 'isparta-loader'
-			}
-		);
-		// Continuous Integration mode
-		// if true, Karma captures browsers, runs the tests and exits
-		karmaConfig.singleRun = true;
-	} else {
-		karmaConfig.browsers.push("Chrome");
-		karmaConfig.singleRun = false;
-	}
+    client: {
+      mocha: {
+        opts: './mocha.opts'
+      }
+    },
 
-	config.set(karmaConfig);
+    webpack: {
+      devtool: 'inline-source-map',
+      module: {
+          rules: [
+              {
+                  test: /\.js$/,
+                  exclude: /node_modules/,
+                  loader: "babel-loader",
+              }
+          ]
+      }
+    },
+
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+      './test/**/*.spec.js': config.coverage ? ['webpack'] : ['webpack', 'sourcemap']
+    },
+
+    browsers: [],
+
+    reporters: ['mocha'],
+    webpackMiddleware: {
+        noInfo: true
+    }
+  };
+
+  karmaConfig.browsers.push(config.chrome ? "Chrome" : "ChromeHeadless");
+
+  if(config.coverage) {
+    karmaConfig.reporters.push('coverage-istanbul');
+    karmaConfig.coverageIstanbulReporter = {
+      reports: [ 'text-summary', 'html'],
+      dir: './coverage'
+    };
+    karmaConfig.webpack.module.rules.unshift({
+        test: /\.js$/,
+        exclude: /(node_modules|test)/,
+        loader: 'istanbul-instrumenter-loader'
+    });
+    karmaConfig.singleRun = true;
+  }
+
+  config.set(karmaConfig);
 };

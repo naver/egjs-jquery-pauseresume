@@ -1,3 +1,4 @@
+import jQuery from "jquery";
 import AniPropertyManager from "./AniPropertyManager";
 import MathUtil from "./MathUtil";
 

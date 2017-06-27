@@ -10,7 +10,9 @@ IE 10+, latest of Chrome/FF/Safari, iOS 7+ and Android 2.3+ (except 3.x)
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <!-- 2) Load egjs packaged file -->
-<script src="https://naver.github.io/egjs-pauseresume/dist/pauseresume.min.js"></script>
+{% for dist in site.data.egjs.dist %}
+<script src="//{{ site.data.egjs.github.user }}.github.io/{{ site.data.egjs.github.repo }}/{{ dist }}"></script>
+{% endfor %}
 ```
 
 #### Animate jquery element

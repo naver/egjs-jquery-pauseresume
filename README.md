@@ -1,62 +1,53 @@
-# egjs-pauseresume
+# egjs-pauseresume [![npm version](https://badge.fury.io/js/%40egjs%2Fpauseresume.svg)](https://badge.fury.io/js/%40egjs%2Fpauseresume) [![Build Status](https://travis-ci.org/naver/egjs-pauseresume.svg?branch=master)](https://travis-ci.org/naver/egjs-pauseresume) 
 
-Pauses and resumes animation executed by the jQuery animate() method.
+[![Issue Stats](http://issuestats.com/github/naver/egjs-pauseresume/badge/pr?style=flat)](http://issuestats.com/github/naver/egjs-pauseresume)
+[![Issue Stats](http://issuestats.com/github/naver/egjs-pauseresume/badge/issue?style=flat)](http://issuestats.com/github/naver/egjs-pauseresume)
 
-## Domcumentation
+Pauses and resumes animation executed by the jQuery animate() method
 
- * API Documentation
-   - Latest: [http://naver.github.io/egjs/latest/doc/jQuery.html#pause](http://naver.github.io/egjs/latest/doc/jQuery.html#pause)
-   - Specific version: [http://naver.github.io/egjs/[VERSION]/doc/jQuery.html#pause](http://naver.github.io/egjs/[VERSION]/doc/jQuery.html#pause)
- * An advanced demo is under construction.
+## Documentation
+* API Documentation
+    - Latest: [https://naver.github.io/egjs-pauseresume/release/latest/doc/](https://naver.github.io/egjs-pauseresume/release/latest/doc/)
+    - Specific version: [https://naver.github.io/egjs-pauseresume/release/[VERSION]/doc/](https://naver.github.io/egjs-pauseresume/release/[VERSION]/doc/)
+
 
 ## Supported Browsers
-
-The following table shows browsers supported by egjs-pauseresume
+The following are the supported browsers.
 
 |Internet Explorer|Chrome|Firefox|Safari|iOS|Android|
 |---|---|---|---|---|---|
 |10+|Latest|Latest|Latest|7+|2.3+(except 3.x)|
 
 
-## Dependency
-egjs-pauseresume has the dependencies for the following libraries:
 
-|[jquery](https://jquery.com)|
-|----|
-|1.7.0+|
 
-## How to Use
-### 1. Load dependency library before pauseresume.js (or pauseresume.min.js) load.
-```html
-<script src="../node_modules/jquery/jquery.js"></script>
-```
 
-### 2. Load pauseresume.js
-```html
-<script src="../dist/pauseresume.js"></script>
-```
 
-### 3. Make a target element
-```html
-<!-- Target DOM -->
-<div id="area"></div>
-```
+## Download and Installation
 
-### 4. Use egjs-pauseresume
-```javascript
-function loopLeftRight() {
-  $("#area")
-    .animate({"left": "200px"})
-    .animate({"left": "0px"}, loopLeftRight);
-}
+Download dist files from repo directly or install it via npm. 
 
-$("#area").on("mouseover", function() {
-  $(this).pause();
-});
+### For development (Uncompressed)
 
-$("#area").on("mouseout", function() {
-  $(this).resume();
-});
+You can download the uncompressed files for development
+
+- Latest : https://naver.github.io/egjs-pauseresume/release/latest/dist/pauseresume.js
+- Specific version : https://naver.github.io/egjs-pauseresume/release/[VERSION]/dist/pauseresume.js
+
+### For production (Compressed)
+
+You can download the compressed files for production
+
+- Latest : https://naver.github.io/egjs-pauseresume/release/latest/dist/pauseresume.min.js
+- Specific version : https://naver.github.io/egjs-pauseresume/release/[VERSION]/dist/pauseresume.min.js
+
+
+### Installation with npm
+
+The following command shows how to install egjs-pauseresume using npm.
+
+```bash
+$ npm install @egjs/pauseresume
 ```
 
 ## Bug Report
@@ -66,6 +57,7 @@ If you find a bug, please report it to us using the [Issues](https://github.com/
 
 ## License
 egjs-pauseresume is released under the [MIT license](http://naver.github.io/egjs/license.txt).
+
 
 ```
 Copyright (c) 2015 NAVER Corp.

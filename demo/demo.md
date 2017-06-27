@@ -1,11 +1,8 @@
-#### pauseResume demo
+### pauseResume demo
 
-<div class="testBackground">
-<div id="rectBox" class="test">Mouse Over Me to pause</div>
-</div>
-<br/>
+{% include_relative assets/html/demo.html %}
 
-```javascript
+```js
 //pause / resume by mouse over/out events.
 $("#rectBox").hover(function() {
   $(this).pause();

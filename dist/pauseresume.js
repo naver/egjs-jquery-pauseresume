@@ -1,22 +1,22 @@
 /*!
- * Copyright (c) 2017 undefined
- * @egjs/pauseresume projects are licensed under the MIT license
+ * Copyright (c) 2017 NAVER Corp.
+ * @egjs/pauseresume project is licensed under the MIT license
  * 
  * @egjs/pauseresume JavaScript library
  * 
  * 
- * @version 2.0.0-rc.1
+ * @version 2.0.0
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("jquery"));
 	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["pauseresume"] = factory();
-	else
-		root["eg"] = root["eg"] || {}, root["eg"]["pauseresume"] = factory();
-})(this, function() {
+		define(["jquery"], factory);
+	else {
+		var a = typeof exports === 'object' ? factory(require("jquery")) : factory(root["jQuery"]);
+		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
+	}
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -25,9 +25,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -82,21 +82,25 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+exports.__esModule = true;
 
-var _AniProperty = __webpack_require__(2);
+var _AniProperty = __webpack_require__(3);
 
 var _AniProperty2 = _interopRequireDefault(_AniProperty);
 
@@ -165,15 +169,13 @@ exports.default = AniPropertyManager;
 module.exports = exports["default"];
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+exports.__esModule = true;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -221,19 +223,23 @@ exports.default = MathUtil;
 module.exports = exports["default"];
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+exports.__esModule = true;
+
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var $ = jQuery;
+var $ = _jquery2.default;
 var uuid = 1;
 
 var AniProperty = function () {
@@ -332,21 +338,23 @@ exports.default = AniProperty;
 module.exports = exports["default"];
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
+exports.__esModule = true;
 
-var _AniPropertyManager = __webpack_require__(0);
+var _jquery = __webpack_require__(0);
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
+var _AniPropertyManager = __webpack_require__(1);
 
 var _AniPropertyManager2 = _interopRequireDefault(_AniPropertyManager);
 
-var _MathUtil = __webpack_require__(1);
+var _MathUtil = __webpack_require__(2);
 
 var _MathUtil2 = _interopRequireDefault(_MathUtil);
 
@@ -576,11 +584,10 @@ exports.default = function ($) {
 	$.expr.filters.paused = function (elem) {
 		return _AniPropertyManager2.default.getStatus(elem) === "paused";
 	};
-}(jQuery);
+}(_jquery2.default);
 
 module.exports = exports["default"];
 
 /***/ })
 /******/ ]);
 });
-//# sourceMappingURL=pauseresume.js.map

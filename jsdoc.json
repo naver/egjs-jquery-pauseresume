@@ -11,11 +11,12 @@
 	"opts": {
 		"template": "node_modules/egjs-jsdoc-template",
 		"destination": "./doc/",
+		"ignores": ["eg.Component"],
 		"expendsItemMembers": true
 	},
 	"plugins": [
 		"plugins/markdown",
-		"node_modules/egjs-jsdoc-template/jsdoc-plugin/ko", 
+		"node_modules/egjs-jsdoc-template/jsdoc-plugin/ko",
 		"node_modules/egjs-jsdoc-template/jsdoc-plugin/group",
 		"node_modules/egjs-jsdoc-template/jsdoc-plugin/codepen",
 		"node_modules/egjs-jsdoc-template/jsdoc-plugin/support"
@@ -26,9 +27,9 @@
 		"default": {
 			"outputSourceFiles" : true
 		},
-		"applicationName": "egjs",
+		"applicationName": "eg.Pauseresume",
 		"disqus": "egjs",
-		"googleAnalytics": "",
+		"googleAnalytics": "UA-70842526-20",
 		"openGraph": {
 			"title": "",
 			"type": "website",
@@ -37,13 +38,13 @@
 			"url": ""
 		},
 		"meta": {
-			"title": "egjs::eg.PauseResume - API",
+			"title": "egjs::pauseresume - API",
 			"description": "Pauses and resumes animation executed by the jQuery animate() method",
-			"keyword": "jQuery, UI Component, egjs, pauseResume"
+			"keyword": ""
 		},
 		"linenums": true,
 		"link": {
-			"canonical": "http://naver.github.io/egjs/latest/doc/"
+			"canonical": "http://naver.github.io/egjs/"
 		}
 	},
 	"markdown": {
