@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Source: AniProperty.js | egjs::pauseresume - API</title>
+    
+    <meta name="description" content="Pauses and resumes animation executed by the jQuery animate() method" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link rel="canonical" href="http://naver.github.io/egjs/"/>
+    
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"eg.Pauseresume","disqus":"egjs","googleAnalytics":"UA-70842526-20","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"egjs::pauseresume - API","description":"Pauses and resumes animation executed by the jQuery animate() method","keyword":""},"linenums":true,"link":{"canonical":"http://naver.github.io/egjs/"}};
+    </script>
+    
+
+    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', config.googleAnalytics]);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="http://naver.github.io/egjs/">eg.Pauseresume</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <!-- Non Grouping Version -->
+        
+            
+
+<li class="item" data-name="jQuery">
+    <span class="title">
+        <a href="jQuery.html">jQuery</a>
+        
+        <span class="static">static</span>
+        
+    </span>
+    <ul class="members itemMembers expends">
+    
+    </ul>
+    <ul class="typedefs itemMembers expends">
+    
+    </ul>
+    <ul class="methods itemMembers expends">
+    
+    <span class="subtitle">Methods</span>
+    
+        <li data-name="jQuery#pause"><a href="jQuery.html#pause">pause</a></li>
+    
+        <li data-name="jQuery#resume"><a href="jQuery.html#resume">resume</a></li>
+    
+    </ul>
+    <ul class="events itemMembers expends">
+    
+    </ul>
+
+    
+    <span class="title" style="margin-top:10px"><a href="index.html">readme</a></span>
+
+</li>
+
+        
+    
+    </ul>
+</div>
+
+    <div class="main">
+        <h1 class="page-title" data-filename="AniProperty.js.html">Source: AniProperty.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import jQuery from "jquery";
+
+const $ = jQuery;
+let uuid = 1;
+
+export default class AniProperty {
+	constructor(type, el, prop, optall) {
+		this.el = el;
+		this.opt = optall;
+		this.start = -1;
+		this.elapsed = 0;
+		this.paused = false;
+		this.uuid = uuid++;
+		this.easingNames = [];
+		this.prop = prop;
+		this.type = type;
+	}
+
+	init() {
+		this.start = $.now();
+		this.elapsed = 0;
+
+		for (const propName in this.prop) {
+			const propValue = this.prop[propName];
+
+			// DO NOT SUPPORT TRANSFORM YET
+			// TODO: convert from relative value to absolute value on transform
+			if (propName === "transform") {
+				continue;
+			}
+
+			if (typeof propValue !== "string") {
+				continue;
+			}
+
+			// If it has a absoulte value.
+			const markIndex = propValue.search(/[+|-]=/);
+
+			if (markIndex &lt; 0) {
+				// this.prop[propName] = propValue;
+				continue;
+			}
+
+			// If it has a relative value
+			const sign = propValue.charAt(markIndex) === "-" ? -1 : 1;
+
+			// Current value
+			const currValue = $.css(this.el, propName);
+
+			// CurrValue + (relativeValue)
+			this.prop[propName] = propValue
+				.replace(/([-|+])*([\d|.])+/g, AniProperty.generateAbsoluteValMaker(currValue, propName, sign))
+				.replace(/[-|+]+=/g, "");
+		}
+	}
+
+	addEasingFn(easingName) {
+		this.easingNames.push(easingName);
+	}
+
+	clearEasingFn() {
+		let easing;
+
+		easing = this.easingNames.shift();
+		while (easing) {
+			delete $.easing[easing];
+			easing = this.easingNames.shift();
+		}
+		this.easingNames = [];
+	}
+
+	/**
+	 * Generate a new absolute value maker.
+	 *
+	 * function to avoid JS Hint error "Don't make functions within a loop"
+	 */
+	static generateAbsoluteValMaker(prevValue, propName, sign) {
+		let prev = prevValue;
+
+		return function absoluteValMaker(match) {
+			if (!prev || prev === "auto") {
+				// Empty strings, null, undefined and "auto" are converted to 0.
+				// This solution is somewhat extracted from jQuery Tween.propHooks._default.get
+				// TODO: Should we consider adopting a Tween.propHooks?
+				prev = 0;
+			} else {
+				prev = parseFloat(prev);
+			}
+			return prev + (match * sign);
+		};
+	}
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+
+        
+        <!-- disqus code -->
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <!-- // disqus code -->
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jun 27 2017 13:55:11 GMT+0900 (KST)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

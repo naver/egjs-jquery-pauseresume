@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Source: index.js | egjs::pauseresume - API</title>
+    
+    <meta name="description" content="Pauses and resumes animation executed by the jQuery animate() method" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+    <link rel="canonical" href="http://naver.github.io/egjs/"/>
+    
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"eg.Pauseresume","disqus":"egjs","googleAnalytics":"UA-70842526-20","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"egjs::pauseresume - API","description":"Pauses and resumes animation executed by the jQuery animate() method","keyword":""},"linenums":true,"link":{"canonical":"http://naver.github.io/egjs/"}};
+    </script>
+    
+
+    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', config.googleAnalytics]);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="http://naver.github.io/egjs/">eg.Pauseresume</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+    
+        <!-- Non Grouping Version -->
+        
+            
+
+<li class="item" data-name="jQuery">
+    <span class="title">
+        <a href="jQuery.html">jQuery</a>
+        
+        <span class="static">static</span>
+        
+    </span>
+    <ul class="members itemMembers expends">
+    
+    </ul>
+    <ul class="typedefs itemMembers expends">
+    
+    </ul>
+    <ul class="methods itemMembers expends">
+    
+    <span class="subtitle">Methods</span>
+    
+        <li data-name="jQuery#pause"><a href="jQuery.html#pause">pause</a></li>
+    
+        <li data-name="jQuery#resume"><a href="jQuery.html#resume">resume</a></li>
+    
+    </ul>
+    <ul class="events itemMembers expends">
+    
+    </ul>
+
+    
+    <span class="title" style="margin-top:10px"><a href="index.html">readme</a></span>
+
+</li>
+
+        
+    
+    </ul>
+</div>
+
+    <div class="main">
+        <h1 class="page-title" data-filename="index.js.html">Source: index.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import jQuery from "jquery";
+import AniPropertyManager from "./AniPropertyManager";
+import MathUtil from "./MathUtil";
+
+/**
+ * @namespace jQuery
+ */
+export default (function($) {
+	const animateFn = $.fn.animate;
+	const stopFn = $.fn.stop;
+	const delayFn = $.fn.delay;
+
+	/**
+	 * Generate a new easing function.
+	 *
+	 * function to avoid JS Hint error "Don't make functions within a loop"
+	 */
+	function generateNewEasingFunc(resumePercent, remainPercent, scale, originalEasing) {
+		return function easingFunc(percent) {
+			const newPercent = resumePercent + remainPercent * percent;
+
+			return scale(originalEasing(newPercent));
+		};
+	}
+
+	$.fn.animate = function(prop, speed, easing, callback) {
+		return this.each(function() {
+			// optall should be made for each elements.
+			const optall = $.speed(speed, easing, callback);
+
+			// prepare next animation when current animation completed.
+			optall.complete = function() {
+				AniPropertyManager.prepareNextAniProp(this);
+			};
+
+			// Queue animation property to recover the current animation.
+			AniPropertyManager.addAniProperty("animate", this, prop, optall);
+			animateFn.call($(this), prop, optall);
+		});
+
+		// TODO: Below code is more reasonable?
+		// return animateFn.call(this, prop, optall); // and declare optall at outside this.each loop.
+	};
+
+	/**
+	 * Set a timer to delay execution of subsequent items in the queue.
+	 * And it internally manages "fx"queue to support pause/resume if "fx" type.
+	 *
+	 * @param {Number} An integer indicating the number of milliseconds to delay execution of the next item in the queue.
+	 * @param {String} A string containing the name of the queue. Defaults to fx, the standard effects queue.
+	 */
+	$.fn.delay = function(time, type, ...args) {
+		let t;
+		const isCallByResume = args[0]; // internal used value.
+
+		if (type &amp;&amp; type !== "fx") {
+			return delayFn.call(this, time, type);
+		}
+
+		t = parseInt(time, 10);
+		t = isNaN(t) ? 0 : t;
+
+		return this.each(function() {
+			if (!isCallByResume) {
+				// Queue delay property to recover the current animation.
+				// Don't add property when delay is called by resume.
+				AniPropertyManager.addAniProperty("delay", this, null, {duration: t});
+			}
+
+
+			delayFn.call($(this), time).queue(next => {
+				next();
+
+				// Remove delay property when delay has been expired.
+				AniPropertyManager.removeAniProperty(this);
+			});
+		});
+	};
+
+	/**
+	 * Pauses the animation executed through a call to the jQuery &lt;a href=http://api.jquery.com/animate/>.animate()&lt;/a> method.
+	 * @ko jQuery의&lt;a href=http://api.jquery.com/animate/>animate() 메서드&lt;/a>가 실행한 애니메이션을 일시 정지한다
+	 *
+	 * @name jQuery#pause
+	 * @method
+	 * @support {"ie": "10+", "ch" : "latest", "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.3+ (except 3.x)"}
+	 * @example
+	 * $("#box").pause(); //paused the current animation
+	 */
+	$.fn.pause = function() {
+		return this.each(function() {
+			let p;
+
+			if (AniPropertyManager.getStatus(this) !== "inprogress") {
+				return;
+			}
+			// Clear fx-queue except 1 dummy function
+			// for promise not to be expired when calling stop()
+			$.queue(this, "fx", [$.noop]);
+			stopFn.call($(this));
+
+			// Remember current animation property
+			p = this.__aniProps[0];
+			if (p) {
+				p.elapsed += $.now() - p.start;
+
+				// Complement native timer's inaccuracy (complete timer can be different from your request.)
+				// (eg. your request:400ms -> real :396 ~ 415 ms ))
+				if (p.elapsed >= p.opt.duration) {
+					p = AniPropertyManager.prepareNextAniProp(this);
+				}
+
+				p &amp;&amp; (p.paused = true);
+			}
+		});
+	};
+
+	/**
+	 * Resumes the animation paused through a call to the pause() method.
+	 * @ko pause() 메서드가 일시 정지한 애니메이션을 다시 실행한다
+	 *
+	 * @name jQuery#resume
+	 * @alias eg.Pause
+	 * @method
+	 * @support {"ie": "10+", "ch" : "latest", "sf" : "latest", "edge" : "latest", "ios" : "7+", "an" : "2.3+ (except 3.x)"}
+	 * @example
+	 * $("#box").resume(); //resume the paused animation
+	 */
+	$.fn.resume = function() {
+		return this.each(function() {
+			const type = "fx";
+			let p;
+			let i;
+
+			if (AniPropertyManager.getStatus(this) !== "paused") {
+				return;
+			}
+
+			// Clear fx-queue,
+			// And this queue will be initialized by animate call.
+			$.queue(this, type || "fx", []);
+
+			// Restore __aniProps
+			i = 0;
+			p = this.__aniProps[i];
+
+			while (p) {
+				// Restore easing status
+				if (p.elapsed > 0 &amp;&amp; p.opt.easing) {
+					const resumePercent = p.elapsed / p.opt.duration;
+					const remainPercent = 1 - resumePercent;
+					const originalEasing = $.easing[p.opt.easing];
+					const startEasingValue = originalEasing(resumePercent);
+					const scale = MathUtil.scaler([startEasingValue, 1], [0, 1]);
+					const newEasingName = `${p.opt.easing}_${p.uuid}`;
+
+					// Make new easing function that continues from pause point.
+					$.easing[newEasingName] = generateNewEasingFunc(
+						resumePercent, remainPercent, scale, originalEasing);
+					p.opt.easing = newEasingName;
+
+					// Store new easing function to clear it later.
+					p.addEasingFn(newEasingName);
+				}
+
+				p.paused = false;
+				p.opt.duration -= p.elapsed;
+
+				// If duration remains, request 'animate' with storing aniProps
+				if (p.opt.duration > 0 || p.elapsed === 0) {
+					i === 0 &amp;&amp; p.init();
+
+					if (p.type === "delay") {
+						// pass last parameter 'true' not to add an aniProperty.
+						$(this).delay(p.opt.duration, "fx", true);
+					} else {
+						animateFn.call($(this), p.prop, p.opt);
+					}
+				}
+
+				i++;
+				p = this.__aniProps[i];
+			}
+		});
+	};
+
+	$.fn.stop = function(...args) {
+		const type = args[0];
+		let clearQ = args[1];
+
+		stopFn.apply(this, args);
+
+		if (typeof type !== "string") {
+			clearQ = type;
+		}
+
+		return this.each(function() {
+			let p;
+
+			// When this element was not animated properly, do nothing.
+			if (AniPropertyManager.getStatus(this) === "empty") {
+				return;
+			}
+
+			if (!clearQ) {
+				p = this.__aniProps.shift();
+				p &amp;&amp; p.clearEasingFn();
+			} else {
+				// If clearQueue is requested,
+				// then all properties must be initialized
+				// for element not to be resumed.
+				p = this.__aniProps.shift();
+				while (p) {
+					p.clearEasingFn();
+					p = this.__aniProps.shift();
+				}
+				this.__aniProps = [];
+			}
+		});
+	};
+
+	$.expr.filters.paused = function(elem) {
+		return AniPropertyManager.getStatus(elem) === "paused";
+	};
+})(jQuery);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+
+        
+        <!-- disqus code -->
+        <div id="disqus_thread"></div>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <!-- // disqus code -->
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jun 27 2017 13:55:11 GMT+0900 (KST)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/main.js"></script>
+</body>
+</html>
