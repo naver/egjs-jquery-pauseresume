@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Namespace: jQuery | egjs::pauseresume - API</title>
+    <title>Source: AniProperty.js | egjs::pauseresume - API</title>
     
     <meta name="description" content="Pauses and resumes animation executed by the jQuery animate() method" />
     
@@ -99,263 +99,109 @@
 </div>
 
     <div class="main">
-        <h1 class="page-title" data-filename="jQuery.html">Namespace: jQuery</h1>
+        <h1 class="page-title" data-filename="AniProperty.js.html">Source: AniProperty.js</h1>
         
 
 
-
-<section>
-
-<header>
-    <h2>
-    jQuery
-    </h2>
-    <button id="toggle">
-        
-            English
-        
-    </button>
-</header>
-
-<article>
-    <div class="container-overview">
-    
-
-    
-        
-        
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <!-- if data.codepen -->
-</dl>
-
-        
-    
-    </div>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="pause">
-            
-            pause<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line80">line 80</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-	<div class="description en">
-		<p>Pauses the animation executed through a call to the jQuery <a href=http://api.jquery.com/animate/>.animate()</a> method.</p>
-	</div>
-	
-	
-	<div class="description ko">
-		<p>jQuery의<a href=http://api.jquery.com/animate/>animate() 메서드</a>가 실행한 애니메이션을 일시 정지한다</p>
-	</div>
-	
-
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>$(&quot;#box&quot;).pause(); //paused the current animation</p></code></pre>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <!-- if data.codepen -->
-</dl>
-
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="resume">
-            
-            resume<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="index.js.html">index.js</a>, <a href="index.js.html#line118">line 118</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-	<div class="description en">
-		<p>Resumes the animation paused through a call to the pause() method.</p>
-	</div>
-	
-	
-	<div class="description ko">
-		<p>pause() 메서드가 일시 정지한 애니메이션을 다시 실행한다</p>
-	</div>
-	
-
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>$(&quot;#box&quot;).resume(); //resume the paused animation</p></code></pre>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-
-    <!-- if data.codepen -->
-</dl>
-
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-
     
-</article>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import jQuery from "jquery";
+
+const $ = jQuery;
+let uuid = 1;
+
+export default class AniProperty {
+	constructor(type, el, prop, optall) {
+		this.el = el;
+		this.opt = optall;
+		this.start = -1;
+		this.elapsed = 0;
+		this.paused = false;
+		this.uuid = uuid++;
+		this.easingNames = [];
+		this.prop = prop;
+		this.type = type;
+	}
+
+	init() {
+		this.start = $.now();
+		this.elapsed = 0;
+
+		for (const propName in this.prop) {
+			const propValue = this.prop[propName];
+
+			// DO NOT SUPPORT TRANSFORM YET
+			// TODO: convert from relative value to absolute value on transform
+			if (propName === "transform") {
+				continue;
+			}
+
+			if (typeof propValue !== "string") {
+				continue;
+			}
+
+			// If it has a absoulte value.
+			const markIndex = propValue.search(/[+|-]=/);
+
+			if (markIndex &lt; 0) {
+				// this.prop[propName] = propValue;
+				continue;
+			}
+
+			// If it has a relative value
+			const sign = propValue.charAt(markIndex) === "-" ? -1 : 1;
+
+			// Current value
+			const currValue = $.css(this.el, propName);
+
+			// CurrValue + (relativeValue)
+			this.prop[propName] = propValue
+				.replace(/([-|+])*([\d|.])+/g, AniProperty.generateAbsoluteValMaker(currValue, propName, sign))
+				.replace(/[-|+]+=/g, "");
+		}
+	}
+
+	addEasingFn(easingName) {
+		this.easingNames.push(easingName);
+	}
+
+	clearEasingFn() {
+		let easing;
+
+		easing = this.easingNames.shift();
+		while (easing) {
+			delete $.easing[easing];
+			easing = this.easingNames.shift();
+		}
+		this.easingNames = [];
+	}
+
+	/**
+	 * Generate a new absolute value maker.
+	 *
+	 * function to avoid JS Hint error "Don't make functions within a loop"
+	 */
+	static generateAbsoluteValMaker(prevValue, propName, sign) {
+		let prev = prevValue;
+
+		return function absoluteValMaker(match) {
+			if (!prev || prev === "auto") {
+				// Empty strings, null, undefined and "auto" are converted to 0.
+				// This solution is somewhat extracted from jQuery Tween.propHooks._default.get
+				// TODO: Should we consider adopting a Tween.propHooks?
+				prev = 0;
+			} else {
+				prev = parseFloat(prev);
+			}
+			return prev + (match * sign);
+		};
+	}
+}
+</code></pre>
+        </article>
+    </section>
 
-</section>
 
 
 
@@ -370,7 +216,7 @@
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jun 27 2017 13:55:11 GMT+0900 (KST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jun 27 2017 13:57:01 GMT+0900 (KST)
         </footer>
     </div>
 </div>
