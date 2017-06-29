@@ -1,14 +1,12 @@
-# egjs-pauseresume [![npm version](https://badge.fury.io/js/%40egjs%2Fpauseresume.svg)](https://badge.fury.io/js/%40egjs%2Fpauseresume) [![Build Status](https://travis-ci.org/naver/egjs-pauseresume.svg?branch=master)](https://travis-ci.org/naver/egjs-pauseresume) 
+# egjs-pauseresume [![npm version](https://badge.fury.io/js/%40egjs%2Fpauseresume.svg)](https://badge.fury.io/js/%40egjs%2Fpauseresume) [![Build Status](https://travis-ci.org/naver/egjs-pauseresume.svg?branch=master)](https://travis-ci.org/naver/egjs-pauseresume) [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-pauseresume/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-pauseresume?branch=master)
 
-[![Issue Stats](http://issuestats.com/github/naver/egjs-pauseresume/badge/pr?style=flat)](http://issuestats.com/github/naver/egjs-pauseresume)
-[![Issue Stats](http://issuestats.com/github/naver/egjs-pauseresume/badge/issue?style=flat)](http://issuestats.com/github/naver/egjs-pauseresume)
 
 Pauses and resumes animation executed by the jQuery animate() method
 
-## Documentation
-* API Documentation
-    - Latest: [https://naver.github.io/egjs-pauseresume/release/latest/doc/](https://naver.github.io/egjs-pauseresume/release/latest/doc/)
-    - Specific version: [https://naver.github.io/egjs-pauseresume/release/[VERSION]/doc/](https://naver.github.io/egjs-pauseresume/release/[VERSION]/doc/)
+
+## Documents
+- [Get Started and Demos](https://naver.github.io/egjs-pauseresume/)
+- [API documentation](https://naver.github.io/egjs-pauseresume/release/latest/doc/)
 
 
 ## Supported Browsers
@@ -17,10 +15,6 @@ The following are the supported browsers.
 |Internet Explorer|Chrome|Firefox|Safari|iOS|Android|
 |---|---|---|---|---|---|
 |10+|Latest|Latest|Latest|7+|2.3+(except 3.x)|
-
-
-
-
 
 
 ## Download and Installation
