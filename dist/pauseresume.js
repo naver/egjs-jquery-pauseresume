@@ -5,7 +5,7 @@
  * @egjs/pauseresume JavaScript library
  * 
  * 
- * @version 2.0.0-rc2
+ * @version 2.0.0-rc
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')

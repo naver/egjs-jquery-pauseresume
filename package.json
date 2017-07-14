@@ -1,6 +1,6 @@
 {
   "name": "@egjs/pauseresume",
-  "version": "2.0.0-rc2",
+  "version": "2.0.0-rc",
   "main": "dist/pauseresume.js",
   "es2015": "src/Pauseresume.js",
   "scripts": {
