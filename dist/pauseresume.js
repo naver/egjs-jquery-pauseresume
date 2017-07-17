@@ -104,7 +104,7 @@ var _AniProperty = __webpack_require__(3);
 
 var _AniProperty2 = _interopRequireDefault(_AniProperty);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -114,7 +114,7 @@ var AniPropertyManager = function () {
 	}
 
 	AniPropertyManager.addAniProperty = function addAniProperty(type, el, prop, optall) {
-		var newProp = new _AniProperty2.default(type, el, prop, optall);
+		var newProp = new _AniProperty2["default"](type, el, prop, optall);
 
 		el.__aniProps = el.__aniProps || [];
 
@@ -165,7 +165,7 @@ var AniPropertyManager = function () {
 	return AniPropertyManager;
 }();
 
-exports.default = AniPropertyManager;
+exports["default"] = AniPropertyManager;
 module.exports = exports["default"];
 
 /***/ }),
@@ -219,7 +219,7 @@ var MathUtil = function () {
 	return MathUtil;
 }();
 
-exports.default = MathUtil;
+exports["default"] = MathUtil;
 module.exports = exports["default"];
 
 /***/ }),
@@ -235,11 +235,11 @@ var _jquery = __webpack_require__(0);
 
 var _jquery2 = _interopRequireDefault(_jquery);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var $ = _jquery2.default;
+var $ = _jquery2["default"];
 var uuid = 1;
 
 var AniProperty = function () {
@@ -334,7 +334,7 @@ var AniProperty = function () {
 	return AniProperty;
 }();
 
-exports.default = AniProperty;
+exports["default"] = AniProperty;
 module.exports = exports["default"];
 
 /***/ }),
@@ -358,12 +358,12 @@ var _MathUtil = __webpack_require__(2);
 
 var _MathUtil2 = _interopRequireDefault(_MathUtil);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 /**
  * @namespace jQuery
  */
-exports.default = function ($) {
+exports["default"] = function ($) {
 	var animateFn = $.fn.animate;
 	var stopFn = $.fn.stop;
 	var delayFn = $.fn.delay;
@@ -388,11 +388,11 @@ exports.default = function ($) {
 
 			// prepare next animation when current animation completed.
 			optall.complete = function () {
-				_AniPropertyManager2.default.prepareNextAniProp(this);
+				_AniPropertyManager2["default"].prepareNextAniProp(this);
 			};
 
 			// Queue animation property to recover the current animation.
-			_AniPropertyManager2.default.addAniProperty("animate", this, prop, optall);
+			_AniPropertyManager2["default"].addAniProperty("animate", this, prop, optall);
 			animateFn.call($(this), prop, optall);
 		});
 
@@ -424,14 +424,14 @@ exports.default = function ($) {
 			if (!isCallByResume) {
 				// Queue delay property to recover the current animation.
 				// Don't add property when delay is called by resume.
-				_AniPropertyManager2.default.addAniProperty("delay", this, null, { duration: t });
+				_AniPropertyManager2["default"].addAniProperty("delay", this, null, { duration: t });
 			}
 
 			delayFn.call($(this), time).queue(function (next) {
 				next();
 
 				// Remove delay property when delay has been expired.
-				_AniPropertyManager2.default.removeAniProperty(_this);
+				_AniPropertyManager2["default"].removeAniProperty(_this);
 			});
 		});
 	};
@@ -450,7 +450,7 @@ exports.default = function ($) {
 		return this.each(function () {
 			var p = void 0;
 
-			if (_AniPropertyManager2.default.getStatus(this) !== "inprogress") {
+			if (_AniPropertyManager2["default"].getStatus(this) !== "inprogress") {
 				return;
 			}
 			// Clear fx-queue except 1 dummy function
@@ -466,7 +466,7 @@ exports.default = function ($) {
 				// Complement native timer's inaccuracy (complete timer can be different from your request.)
 				// (eg. your request:400ms -> real :396 ~ 415 ms ))
 				if (p.elapsed >= p.opt.duration) {
-					p = _AniPropertyManager2.default.prepareNextAniProp(this);
+					p = _AniPropertyManager2["default"].prepareNextAniProp(this);
 				}
 
 				p && (p.paused = true);
@@ -491,7 +491,7 @@ exports.default = function ($) {
 			var p = void 0;
 			var i = void 0;
 
-			if (_AniPropertyManager2.default.getStatus(this) !== "paused") {
+			if (_AniPropertyManager2["default"].getStatus(this) !== "paused") {
 				return;
 			}
 
@@ -510,7 +510,7 @@ exports.default = function ($) {
 					var remainPercent = 1 - resumePercent;
 					var originalEasing = $.easing[p.opt.easing];
 					var startEasingValue = originalEasing(resumePercent);
-					var scale = _MathUtil2.default.scaler([startEasingValue, 1], [0, 1]);
+					var scale = _MathUtil2["default"].scaler([startEasingValue, 1], [0, 1]);
 					var newEasingName = p.opt.easing + "_" + p.uuid;
 
 					// Make new easing function that continues from pause point.
@@ -560,7 +560,7 @@ exports.default = function ($) {
 			var p = void 0;
 
 			// When this element was not animated properly, do nothing.
-			if (_AniPropertyManager2.default.getStatus(this) === "empty") {
+			if (_AniPropertyManager2["default"].getStatus(this) === "empty") {
 				return;
 			}
 
@@ -582,9 +582,9 @@ exports.default = function ($) {
 	};
 
 	$.expr.filters.paused = function (elem) {
-		return _AniPropertyManager2.default.getStatus(elem) === "paused";
+		return _AniPropertyManager2["default"].getStatus(elem) === "paused";
 	};
-}(_jquery2.default);
+}(_jquery2["default"]);
 
 module.exports = exports["default"];
 
