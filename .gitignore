@@ -161,6 +161,7 @@ fabric.properties
 _site/
 demo/dist
 demo/doc
+demo/release
 .sass-cache/
 .jekyll-metadata
 
@@ -207,3 +208,4 @@ report/
 temp/
 doc/
 demo/_data/version.yml
+dist
