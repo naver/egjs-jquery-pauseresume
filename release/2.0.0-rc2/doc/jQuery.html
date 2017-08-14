@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Global | egjs::jquery-pauseresume - API</title>
+    <title>Namespace: jQuery | egjs::pauseresume - API</title>
     
     <meta name="description" content="Pauses and resumes animation executed by the jQuery animate() method" />
     
@@ -21,7 +21,7 @@
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     
-    <link rel="canonical" href="http://naver.github.io/egjs-jquery-pauseresume/release/latest/doc/"/>
+    <link rel="canonical" href="http://naver.github.io/egjs/"/>
     
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
@@ -29,7 +29,7 @@
     
     
     <script>
-    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"eg.$PauseResume","disqus":"egjs","googleAnalytics":"UA-70842526-20","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"egjs::jquery-pauseresume - API","description":"Pauses and resumes animation executed by the jQuery animate() method","keyword":""},"linenums":true,"link":{"canonical":"http://naver.github.io/egjs-jquery-pauseresume/release/latest/doc/","home":"https://naver.github.io/egjs-jquery-pauseresume/"}};
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"eg.Pauseresume","disqus":"egjs","googleAnalytics":"UA-70842526-20","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"egjs::pauseresume - API","description":"Pauses and resumes animation executed by the jQuery animate() method","keyword":""},"linenums":true,"link":{"canonical":"http://naver.github.io/egjs/"}};
     </script>
     
 
@@ -51,24 +51,12 @@
 <div id="wrap" class="clearfix">
     
 <div class="navigation">
-    <h3 class="applicationName">
-        <a href="//naver.github.io/egjs/"><img style="width:40px; height:20px;" src="img/type_white.svg"/></a>
-
-        <!-- Homepage link (prefer link.home than applicationName) -->
-        
-        <a href="https://naver.github.io/egjs-jquery-pauseresume/">$PauseResume</a>
-        
-    </h3>
+    <h3 class="applicationName"><a href="http://naver.github.io/egjs/">eg.Pauseresume</a></h3>
 
     <div class="search">
         <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
     </div>
     <ul class="list">
-        <li class="item">
-            <span class="title">
-                <a href="index.html">README</a>
-            </span>
-        </li>
     
         <!-- Non Grouping Version -->
         
@@ -101,6 +89,8 @@
     </ul>
 
     
+    <span class="title" style="margin-top:10px"><a href="index.html">readme</a></span>
+
 </li>
 
         
@@ -109,7 +99,7 @@
 </div>
 
     <div class="main">
-        <h1 class="page-title" data-filename="global.html">Global</h1>
+        <h1 class="page-title" data-filename="jQuery.html">Namespace: jQuery</h1>
         
 
 
@@ -118,7 +108,7 @@
 
 <header>
     <h2>
-        
+    jQuery
     </h2>
     <button id="toggle">
         
@@ -185,14 +175,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="generateAbsoluteValMaker">
+        <h4 class="name" id="pause">
             
-            generateAbsoluteValMaker<span class="signature">()</span>
+            pause<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="AniProperty.js.html">AniProperty.js</a>, <a href="AniProperty.js.html#line77">line 77</a>
+            <a href="index.js.html">index.js</a>, <a href="index.js.html#line80">line 80</a>
         </div>
         
     </div>
@@ -203,11 +193,14 @@
     
     
 	<div class="description en">
-		<p>Generate a new absolute value maker.</p>
-<p>function to avoid JS Hint error &quot;Don't make functions within a loop&quot;</p>
+		<p>Pauses the animation executed through a call to the jQuery <a href=http://api.jquery.com/animate/>.animate()</a> method.</p>
 	</div>
 	
 	
+	<div class="description ko">
+		<p>jQuery의<a href=http://api.jquery.com/animate/>animate() 메서드</a>가 실행한 애니메이션을 일시 정지한다</p>
+	</div>
+	
 
     
     
@@ -225,6 +218,101 @@
     
     
     
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>$(&quot;#box&quot;).pause(); //paused the current animation</p></code></pre>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+
+    <!-- if data.codepen -->
+</dl>
+
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="resume">
+            
+            resume<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="index.js.html">index.js</a>, <a href="index.js.html#line118">line 118</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+	<div class="description en">
+		<p>Resumes the animation paused through a call to the pause() method.</p>
+	</div>
+	
+	
+	<div class="description ko">
+		<p>pause() 메서드가 일시 정지한 애니메이션을 다시 실행한다</p>
+	</div>
+	
+
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>$(&quot;#box&quot;).resume(); //resume the paused animation</p></code></pre>
+    
+
     
 
     
@@ -277,12 +365,12 @@
         <!-- disqus code -->
         <div id="disqus_thread"></div>
         <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        <a href="//disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
         <!-- // disqus code -->
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> on Mon Aug 14 2017 15:08:18 GMT+0900 (KST)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Jun 27 2017 14:22:34 GMT+0900 (KST)
         </footer>
     </div>
 </div>
