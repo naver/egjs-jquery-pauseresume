@@ -27,7 +27,7 @@
 		"default": {
 			"outputSourceFiles" : true
 		},
-		"applicationName": "eg.Pauseresume",
+		"applicationName": "eg.$PauseResume",
 		"disqus": "egjs",
 		"googleAnalytics": "UA-70842526-20",
 		"openGraph": {
@@ -38,13 +38,14 @@
 			"url": ""
 		},
 		"meta": {
-			"title": "egjs::pauseresume - API",
+			"title": "egjs::jquery-pauseresume - API",
 			"description": "Pauses and resumes animation executed by the jQuery animate() method",
 			"keyword": ""
 		},
 		"linenums": true,
 		"link": {
-			"canonical": "http://naver.github.io/egjs/"
+			"canonical": "http://naver.github.io/egjs-jquery-pauseresume/release/latest/doc/",
+			"home": "https://naver.github.io/egjs-jquery-pauseresume/"
 		}
 	},
 	"markdown": {
