@@ -41,7 +41,7 @@ You can download the compressed files for production
 The following command shows how to install egjs-jquery-pauseresume using npm.
 
 ```bash
-$ npm install @egjs/pauseresume
+$ npm install @egjs/jquery-pauseresume
 ```
 
 ## Bug Report
