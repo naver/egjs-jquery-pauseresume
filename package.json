@@ -1,7 +1,7 @@
 {
   "name": "@egjs/jquery-pauseresume",
   "description": "Pauses and resumes animation executed by the jQuery animate() method",
-  "version": "2.0.0",
+  "version": "2.0.0-snapshot",
   "main": "dist/pauseresume.js",
   "es2015": "src/index.js",
   "scripts": {
