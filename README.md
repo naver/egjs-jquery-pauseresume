@@ -1,12 +1,12 @@
-# egjs-pauseresume [![npm version](https://badge.fury.io/js/%40egjs%2Fpauseresume.svg)](https://badge.fury.io/js/%40egjs%2Fpauseresume) [![Build Status](https://travis-ci.org/naver/egjs-pauseresume.svg?branch=master)](https://travis-ci.org/naver/egjs-pauseresume) [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-pauseresume/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-pauseresume?branch=master)
+# egjs-jquery-pauseresume [![npm version](https://badge.fury.io/js/%40egjs%2Fjquery-pauseresume.svg)](https://badge.fury.io/js/%40egjs%2Fjquery-pauseresume) [![Build Status](https://travis-ci.org/naver/egjs-jquery-pauseresume.svg?branch=master)](https://travis-ci.org/naver/egjs-jquery-pauseresume) [![Coverage Status](https://coveralls.io/repos/github/naver/egjs-jquery-pauseresume/badge.svg?branch=master)](https://coveralls.io/github/naver/egjs-jquery-pauseresume?branch=master)
 
 
 Pauses and resumes animation executed by the jQuery animate() method
 
 
 ## Documents
-- [Get Started and Demos](https://naver.github.io/egjs-pauseresume/)
-- [API documentation](https://naver.github.io/egjs-pauseresume/release/latest/doc/)
+- [Get Started and Demos](https://naver.github.io/egjs-jquery-transform/)
+- [API documentation](https://naver.github.io/egjs-jquery-transform/release/latest/doc/)
 
 
 ## Supported Browsers
@@ -25,20 +25,20 @@ Download dist files from repo directly or install it via npm.
 
 You can download the uncompressed files for development
 
-- Latest : https://naver.github.io/egjs-pauseresume/release/latest/dist/pauseresume.js
-- Specific version : https://naver.github.io/egjs-pauseresume/release/[VERSION]/dist/pauseresume.js
+- Latest : https://naver.github.io/egjs-jquery-transform/release/latest/dist/pauseresume.js
+- Specific version : https://naver.github.io/egjs-jquery-transform/release/[VERSION]/dist/pauseresume.js
 
 ### For production (Compressed)
 
 You can download the compressed files for production
 
-- Latest : https://naver.github.io/egjs-pauseresume/release/latest/dist/pauseresume.min.js
-- Specific version : https://naver.github.io/egjs-pauseresume/release/[VERSION]/dist/pauseresume.min.js
+- Latest : https://naver.github.io/egjs-jquery-transform/release/latest/dist/pauseresume.min.js
+- Specific version : https://naver.github.io/egjs-jquery-transform/release/[VERSION]/dist/pauseresume.min.js
 
 
 ### Installation with npm
 
-The following command shows how to install egjs-pauseresume using npm.
+The following command shows how to install egjs-jquery-transform using npm.
 
 ```bash
 $ npm install @egjs/pauseresume
@@ -46,11 +46,11 @@ $ npm install @egjs/pauseresume
 
 ## Bug Report
 
-If you find a bug, please report it to us using the [Issues](https://github.com/naver/egjs-pauseresume/issues) page on GitHub.
+If you find a bug, please report it to us using the [Issues](https://github.com/naver/egjs-jquery-transform/issues) page on GitHub.
 
 
 ## License
-egjs-pauseresume is released under the [MIT license](http://naver.github.io/egjs/license.txt).
+egjs-jquery-transform is released under the [MIT license](http://naver.github.io/egjs/license.txt).
 
 
 ```

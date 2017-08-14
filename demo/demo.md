@@ -1,4 +1,4 @@
-### pauseResume demo
+### demo
 
 {% include_relative assets/html/demo.html %}
 

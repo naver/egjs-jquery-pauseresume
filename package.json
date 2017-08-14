@@ -1,8 +1,8 @@
 {
-  "name": "@egjs/pauseresume",
-  "version": "2.0.0-snapshot",
+  "name": "@egjs/jquery-pauseresume",
+  "version": "2.0.0",
   "main": "dist/pauseresume.js",
-  "es2015": "src/Pauseresume.js",
+  "es2015": "src/index.js",
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack --env production",

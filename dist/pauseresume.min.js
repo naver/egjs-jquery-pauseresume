@@ -1,8 +1,8 @@
 /*!
  * Copyright (c) 2017 NAVER Corp.
- * @egjs/pauseresume project is licensed under the MIT license
+ * @egjs/jquery-pauseresume project is licensed under the MIT license
  * 
- * @egjs/pauseresume JavaScript library
+ * @egjs/jquery-pauseresume JavaScript library
  * 
  * 
  * @version 2.0.0
