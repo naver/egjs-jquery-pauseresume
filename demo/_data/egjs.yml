@@ -3,6 +3,7 @@ home: //naver.github.io/egjs
 desc: Pauses and resumes animation executed by the jQuery animate() method.
 dist:
 - release/latest/dist/pauseresume.js
+hashtag: "#jquery-plugin #animation"
 GA: UA-70842526-20
 github:
   user: naver
